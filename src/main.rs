@@ -6,10 +6,11 @@
 extern crate volatile_register;
 use volatile_register::RW;
 
+// PADIR & PAOUT are changed from the original as the MSP-EXP430FR4133 uses different pins
 extern "C" {
     static mut WDTCTL: RW<u16>;
-    static mut P1DIR: RW<u8>;
-    static mut P1OUT: RW<u8>;
+    static mut PADIR: RW<u8>;
+    static mut PAOUT: RW<u8>;
 }
 
 #[no_mangle]
@@ -18,10 +19,10 @@ pub static RESET_VECTOR: unsafe extern "C" fn() -> ! = main;
 
 pub unsafe extern "C" fn main() -> ! {
     WDTCTL.write(0x5A00 + 0x80);
-    P1DIR.write(0b0100_0001);
-    P1OUT.write(0x01);
+    PADIR.write(0b0100_0001);
+    PAOUT.write(0x01);
     loop {
-        P1OUT.modify(|x| !x);
+        PAOUT.modify(|x| !x);
         delay(40000);
     }
 }

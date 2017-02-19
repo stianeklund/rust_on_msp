@@ -1,6 +1,7 @@
 # `rust_on_msp`
 
 > Simple blinking LED example that runs on MSP430.
+This is a fork of the original rust_on_msp made for the MSP430F4133
 
 ## Compiling
 
@@ -51,6 +52,6 @@ To run this code on the other boards and MCUs, you need to change it in few plac
 
 ## Board
 
-I am using TI LaunchPad G2 board with `msp430g2553` MCU, but it is easy to port this code for any other board or MCU.
+I am using TI LaunchPad board with `msp430g2553` MCU, but it is easy to port this code for any other board or MCU.
 
 ![board](https://github.com/pftbest/rust_on_msp/raw/master/board.jpg "TI LaunchPad G2")
