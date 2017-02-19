@@ -8,7 +8,7 @@
 
 This project can be compiled using nightly rust and [xargo](https://github.com/japaric/xargo).
 
-Tested using version `rustc 1.16.0-nightly (4ecc85beb 2016-12-29)`
+Tested using version `rustc 1.16.0-nightly (4ecc85beb 2016-12-28)`
 
 Steps:
 * First, install `msp430-elf-gcc` compiler, and make sure it is in your `$PATH`.
