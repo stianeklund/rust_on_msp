@@ -1,13 +1,14 @@
 # `rust_on_msp`
 
 > Simple blinking LED example that runs on MSP430.
-This is a fork of the original rust_on_msp made for the MSP430F4133
+
+> This is a fork of the original rust_on_msp made for the MSP430FR4133
 
 ## Compiling
 
 This project can be compiled using nightly rust and [xargo](https://github.com/japaric/xargo).
 
-Tested using version `rustc 1.16.0-nightly (4ecc85beb 2016-12-28)`
+Tested using version `rustc 1.16.0-nightly (4ecc85beb 2016-12-29)`
 
 Steps:
 * First, install `msp430-elf-gcc` compiler, and make sure it is in your `$PATH`.
@@ -46,12 +47,15 @@ pub static RESET_VECTOR: unsafe extern "C" fn() -> ! = main;
 To run this code on the other boards and MCUs, you need to change it in few places:
 * Get a linker script for your MCU from msp430-elf-gcc include directory, and place it
   inside `ldscripts` folder. (Don't forget to get `*_symbols.ld` one as well).
+  
+  
+The MSP430 package contents contains ldscripts, e.g on Ubuntu & Debian distro's this can be found under /usr/msp430/lib/ldscripts post install of the msp430mcu package.
+
 * Modify `.cargo/config` file so it would point to your ld script from step 1 and change
   linker flags to match your MCU name.
 * Modify `build.rs` script so it would copy the right ld script from step 1.
 
 ## Board
 
-I am using TI LaunchPad board with `msp430g2553` MCU, but it is easy to port this code for any other board or MCU.
-
-![board](https://github.com/pftbest/rust_on_msp/raw/master/board.jpg "TI LaunchPad G2")
+I am using TI LaunchPad board with `MSP430FR4133` MCU, but it is easy to port this code for any other board or MCU.
+![board](http://i.imgur.com/aulPB9H.jpg "TI LaunchPad MSP430FR4133")
