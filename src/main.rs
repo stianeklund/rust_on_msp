@@ -6,11 +6,15 @@
 extern crate volatile_register;
 use volatile_register::RW;
 
-// PADIR & PAOUT are changed from the original as the MSP-EXP430FR4133 uses different pins
+// There are some differences between the MSP430G2553 & the MSP430FR4133
+// Noticeably, the FR4133 does not have P1, P2, P3 etc, but rather PAOUT, PAOUT_L etc.
+// Please refer to the symbols file.
+
 extern "C" {
-    static mut WDTCTL:RW<u16>;
+    static mut WDTCTL: RW<u16>;
     static mut PBDIR_H: RW<u8>;
     static mut PBOUT_H: RW<u8>;
+    static mut PM5CTL0: RW<u16>;
 }
 
 #[no_mangle]
@@ -19,14 +23,18 @@ pub static RESET_VECTOR: unsafe extern "C" fn() -> ! = main;
 
 pub unsafe extern "C" fn main() -> ! {
     // Turn Watchdog timer off (it's on by default)
-    // WDTCTL.write(WDTPW | WDTHOLD);
-
-    WDTCTL.write(0x5A00 + 0x80);
+    WDTCTL.write(0x5A00 + 0x0080);
     PBDIR_H.write(0b0100_0001);
-    PBOUT_H.write(0x01); // Turn LED on
+
+    // Disable GPIO power-on default
+    // This locks the I/O pin configuration change (to / from) LPM5
+    PM5CTL0.write(0x0130);
+    // Turn LED on
+    PBOUT_H.write(0x01);
     loop {
         PBOUT_H.modify(|x| !x);
-        delay(40000);
+        delay(1000000);
+
     }
 }
 
