@@ -8,9 +8,9 @@ use volatile_register::RW;
 
 // PADIR & PAOUT are changed from the original as the MSP-EXP430FR4133 uses different pins
 extern "C" {
-    static mut WDTCTL: RW<u16>;
-    static mut PADIR: RW<u8>;
-    static mut PAOUT: RW<u8>;
+    static mut WDTCTL:RW<u16>;
+    static mut PBDIR_H: RW<u8>;
+    static mut PBOUT_H: RW<u8>;
 }
 
 #[no_mangle]
@@ -18,11 +18,14 @@ extern "C" {
 pub static RESET_VECTOR: unsafe extern "C" fn() -> ! = main;
 
 pub unsafe extern "C" fn main() -> ! {
+    // Turn Watchdog timer off (it's on by default)
+    // WDTCTL.write(WDTPW | WDTHOLD);
+
     WDTCTL.write(0x5A00 + 0x80);
-    PADIR.write(0b0100_0001);
-    PAOUT.write(0x01);
+    PBDIR_H.write(0b0100_0001);
+    PBOUT_H.write(0x01); // Turn LED on
     loop {
-        PAOUT.modify(|x| !x);
+        PBOUT_H.modify(|x| !x);
         delay(40000);
     }
 }

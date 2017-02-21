@@ -9,4 +9,4 @@ clean:
 	cargo clean
 
 prog:
-	mspdebug rf2500 "prog $(TARGET)"
+	mspdebug tilib "prog $(TARGET)"
