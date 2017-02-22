@@ -14,6 +14,8 @@ extern "C" {
     static mut WDTCTL: RW<u16>;
     static mut PBDIR_H: RW<u8>;
     static mut PBOUT_H: RW<u8>;
+    static mut PADIR: RW<u8>;
+    static mut PAOUT: RW<u8>;
     static mut PM5CTL0: RW<u16>;
 }
 
@@ -25,15 +27,18 @@ pub unsafe extern "C" fn main() -> ! {
     // Turn Watchdog timer off (it's on by default)
     WDTCTL.write(0x5A00 + 0x0080);
     PBDIR_H.write(0b0100_0001);
+    PADIR.write(0b0100_0001);
 
     // Disable GPIO power-on default
     // This locks the I/O pin configuration change (to / from) LPM5
     PM5CTL0.write(0x0130);
     // Turn LED on
+    PAOUT.write(0x01);
     PBOUT_H.write(0x01);
     loop {
         PBOUT_H.modify(|x| !x);
-        delay(1000000);
+        delay(50000);
+        PAOUT.modify(|x| !x);
 
     }
 }
